@@ -1,0 +1,66 @@
+{% extends "main/header.html" %}
+
+    {% block content %}
+
+    <!--Products-->
+    <div class="container py-5">
+        <h1 class="font-weight-bold">Наши курсы</h1>
+        <hr>
+        <br>
+        <div class="row">
+            {% for cour in page_obj %}
+                <div class="col-sm-12 col-md-6 col-lg-4 pb-4">
+                    <div class="card h-100" style="border:none">
+                        <img src="{{ cour.course_image.url }}" class="card-img-top" alt="{{ cour.course_name }}" style="width: auto; height: 200px; object-fit: scale-down;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ cour.course_name }}</h5>
+                            <p class="card-text text-muted" style="font-size:12px">{{ cour.course_type }}</p>
+                            <p class="card-text">{{ cour.course_description }}</p>
+                            <div class="row">
+                                <div class="col-3 text-center">
+                                    {% if user.is_authenticated %}
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{cour.pk}}" name="cour_pk">
+                                            <button type="submit" class="btn btn-outline-primary" style="font-size:18px; border-radius: 50%">Добавить в список</button>
+                                        </form>
+                                    {% else %}
+                                        <a href="/register" class="btn btn-outline-primary" style="font-size:18px; border-radius: 50%">Добавить в список</a>
+                                    {% endif %}
+                                </div>
+                                <div class="col-4 text-center">
+
+                                </div>
+                                <div class="col-5 text-center">
+                                    <a href="{{ cour.affiliate_url }}" class="btn btn-warning">Купить</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <!--Pagination-->
+        <div class="container">
+            <div class="pagination justify-content-center">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; Первая</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        <!--end of Pagination-->
+    </div>
+
+    {% endblock %}

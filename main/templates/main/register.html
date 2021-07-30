@@ -1,0 +1,21 @@
+{% extends 'main/header.html' %}
+
+    {% block content %}
+
+        {% load crispy_forms_tags %}
+	    <!--Register-->
+        <div class="container py-5">
+            <h1 class="font-weight-bold">Регистрация</h1>
+            <hr>
+            <br>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <br>
+                <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+            </form>
+            <br><br>
+            <p>У вас уже есть аккаут? <a href="/login">Войти</a></p>
+        </div>
+
+    {% endblock %}

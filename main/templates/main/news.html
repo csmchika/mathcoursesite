@@ -1,0 +1,49 @@
+{% extends "main/header.html" %}
+
+    {% block content %}
+
+    <!--Blog-->
+    <div class="container py-5">
+        <h1 class="font-weight-bold">Статьи</h1>
+        <hr>
+        <br>
+        <div class="row">
+            {% for n in news %}
+                <a href="/{{ n.article_slug }}" style="text-decoration: none">
+                <div class="col-12 pb-4 text-dark">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12 my-auto">
+                            <img src="{{ n.article_image.url }}" class="img-fluid rounded" alt="{{ n.article_name }}">
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-12 my-auto">
+                            <h5>{{ n.article_title }}</h5>
+                            <p class="card-text text-muted" style="font-size:12px">{{ n.article_published }}</p>
+                            <p>{{ n.article_content|safe|truncatewords:25 }}</p>
+                            <button class="btn btn-outline-dark btn-sm">Читать далее</button>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+        </div>
+
+        <div class="container">
+            <div class="pagination justify-content-center">
+                <span class="step-links">
+                    {% if news.has_previous %}
+                        <a href="?page=1">&laquo; Первая</a>
+                        <a href="?page={{ news.previous_page_number }}">Предыдущая</a>
+                    {% endif %}
+                    <span class="current">
+                        Страница {{ news.number }} из {{ news.paginator.num_pages }}
+                    </span>
+                    {% if news.has_next %}
+                        <a href="?page={{ news.next_page_number }}">Следующая</a>
+                        <a href="?page={{ news.paginator.num_pages }}">Последняя &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
